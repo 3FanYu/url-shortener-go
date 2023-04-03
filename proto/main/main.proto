@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package main;
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-validate/validate/validate.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/3FanYu/url-shortener-go";
+
+service ShortUrl {
+    rpc CreateShortUrl(CreateShortUrlReq) returns (CreateShortUrlResp){
+        option (google.api.http) = {
+            post: "/api/short_url"
+            body: "*"
+            response_body: "short_url"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            responses: {
+                key: "200"
+                value: {
+                    description: "Short URL generated."
+                }
+            }
+        };
+    }
+
+    rpc RedirectShortUrl(RedirectShortUrlReq) returns (RedirectShortUrlResp){
+        option (google.api.http) = {
+            get: "/api/short_url"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            responses: {
+                key: "302"
+                value: {
+                    description: "Redirect to original URL."
+                }
+            }
+        };
+    }
+}
+
+message CreateShortUrlReq {
+    string url = 1;
+}
+
+message CreateShortUrlResp {
+    string short_url = 1;
+}
+
+message RedirectShortUrlReq {
+    string short_url = 1;
+}
+
+message RedirectShortUrlResp {
+    string url = 1;
+}
