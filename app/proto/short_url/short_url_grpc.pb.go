@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.12
-// source: main/main.proto
+// source: short_url/short_url.proto
 
 package url_shortener_go
 
@@ -36,7 +36,7 @@ func NewShortUrlClient(cc grpc.ClientConnInterface) ShortUrlClient {
 
 func (c *shortUrlClient) CreateShortUrl(ctx context.Context, in *CreateShortUrlReq, opts ...grpc.CallOption) (*CreateShortUrlResp, error) {
 	out := new(CreateShortUrlResp)
-	err := c.cc.Invoke(ctx, "/main.ShortUrl/CreateShortUrl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/short_url.ShortUrl/CreateShortUrl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func (c *shortUrlClient) CreateShortUrl(ctx context.Context, in *CreateShortUrlR
 
 func (c *shortUrlClient) RedirectShortUrl(ctx context.Context, in *RedirectShortUrlReq, opts ...grpc.CallOption) (*RedirectShortUrlResp, error) {
 	out := new(RedirectShortUrlResp)
-	err := c.cc.Invoke(ctx, "/main.ShortUrl/RedirectShortUrl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/short_url.ShortUrl/RedirectShortUrl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +94,7 @@ func _ShortUrl_CreateShortUrl_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/main.ShortUrl/CreateShortUrl",
+		FullMethod: "/short_url.ShortUrl/CreateShortUrl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ShortUrlServer).CreateShortUrl(ctx, req.(*CreateShortUrlReq))
@@ -112,7 +112,7 @@ func _ShortUrl_RedirectShortUrl_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/main.ShortUrl/RedirectShortUrl",
+		FullMethod: "/short_url.ShortUrl/RedirectShortUrl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ShortUrlServer).RedirectShortUrl(ctx, req.(*RedirectShortUrlReq))
@@ -124,7 +124,7 @@ func _ShortUrl_RedirectShortUrl_Handler(srv interface{}, ctx context.Context, de
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ShortUrl_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "main.ShortUrl",
+	ServiceName: "short_url.ShortUrl",
 	HandlerType: (*ShortUrlServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -137,5 +137,5 @@ var ShortUrl_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "main/main.proto",
+	Metadata: "short_url/short_url.proto",
 }

@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "main/main.proto",
+    "title": "short_url/short_url.proto",
     "version": "version not set"
   },
   "tags": [
@@ -23,7 +23,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/mainRedirectShortUrlResp"
+              "$ref": "#/definitions/short_urlRedirectShortUrlResp"
             }
           },
           "302": {
@@ -71,7 +71,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/mainCreateShortUrlReq"
+              "$ref": "#/definitions/short_urlCreateShortUrlReq"
             }
           }
         ],
@@ -82,30 +82,6 @@
     }
   },
   "definitions": {
-    "mainCreateShortUrlReq": {
-      "type": "object",
-      "properties": {
-        "url": {
-          "type": "string"
-        }
-      }
-    },
-    "mainCreateShortUrlResp": {
-      "type": "object",
-      "properties": {
-        "shortUrl": {
-          "type": "string"
-        }
-      }
-    },
-    "mainRedirectShortUrlResp": {
-      "type": "object",
-      "properties": {
-        "url": {
-          "type": "string"
-        }
-      }
-    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -130,6 +106,30 @@
           "items": {
             "$ref": "#/definitions/protobufAny"
           }
+        }
+      }
+    },
+    "short_urlCreateShortUrlReq": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "short_urlCreateShortUrlResp": {
+      "type": "object",
+      "properties": {
+        "shortUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "short_urlRedirectShortUrlResp": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
         }
       }
     }
