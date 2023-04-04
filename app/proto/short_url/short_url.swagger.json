@@ -6,7 +6,7 @@
   },
   "tags": [
     {
-      "name": "ShortUrl"
+      "name": "UrlShortener"
     }
   ],
   "consumes": [
@@ -18,12 +18,12 @@
   "paths": {
     "/api/short_url": {
       "get": {
-        "operationId": "ShortUrl_RedirectShortUrl",
+        "operationId": "UrlShortener_RedirectToShortUrl",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/short_urlRedirectShortUrlResp"
+              "$ref": "#/definitions/short_urlRedirectToShortUrlResp"
             }
           },
           "302": {
@@ -46,16 +46,16 @@
           }
         ],
         "tags": [
-          "ShortUrl"
+          "UrlShortener"
         ]
       },
       "post": {
-        "operationId": "ShortUrl_CreateShortUrl",
+        "operationId": "UrlShortener_CreateShortUrl",
         "responses": {
           "200": {
             "description": "Short URL generated.",
             "schema": {
-              "type": "string"
+              "$ref": "#/definitions/short_urlShortUrl"
             }
           },
           "default": {
@@ -76,7 +76,7 @@
           }
         ],
         "tags": [
-          "ShortUrl"
+          "UrlShortener"
         ]
       }
     }
@@ -121,15 +121,30 @@
       "type": "object",
       "properties": {
         "shortUrl": {
-          "type": "string"
+          "$ref": "#/definitions/short_urlShortUrl"
         }
       }
     },
-    "short_urlRedirectShortUrlResp": {
+    "short_urlRedirectToShortUrlResp": {
       "type": "object",
       "properties": {
         "url": {
           "type": "string"
+        }
+      }
+    },
+    "short_urlShortUrl": {
+      "type": "object",
+      "properties": {
+        "shortUrl": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     }

@@ -10,7 +10,7 @@ import "google/protobuf/empty.proto";
 
 option go_package = "github.com/3FanYu/url-shortener-go";
 
-service ShortUrl {
+service UrlShortener {
     rpc CreateShortUrl(CreateShortUrlReq) returns (CreateShortUrlResp){
         option (google.api.http) = {
             post: "/api/short_url"
@@ -27,7 +27,7 @@ service ShortUrl {
         };
     }
 
-    rpc RedirectShortUrl(RedirectShortUrlReq) returns (RedirectShortUrlResp){
+    rpc RedirectToShortUrl(RedirectToShortUrlReq) returns (RedirectToShortUrlResp){
         option (google.api.http) = {
             get: "/api/short_url"
         };
@@ -42,18 +42,24 @@ service ShortUrl {
     }
 }
 
+message ShortUrl {
+    string short_url = 1;
+    string url = 2;
+    google.protobuf.Timestamp created_at = 3;
+}
+
 message CreateShortUrlReq {
     string url = 1;
 }
 
 message CreateShortUrlResp {
+    ShortUrl short_url = 1;
+}
+
+message RedirectToShortUrlReq {
     string short_url = 1;
 }
 
-message RedirectShortUrlReq {
-    string short_url = 1;
-}
-
-message RedirectShortUrlResp {
+message RedirectToShortUrlResp {
     string url = 1;
 }

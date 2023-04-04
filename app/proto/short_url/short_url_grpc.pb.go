@@ -18,122 +18,122 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// ShortUrlClient is the client API for ShortUrl service.
+// UrlShortenerClient is the client API for UrlShortener service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type ShortUrlClient interface {
+type UrlShortenerClient interface {
 	CreateShortUrl(ctx context.Context, in *CreateShortUrlReq, opts ...grpc.CallOption) (*CreateShortUrlResp, error)
-	RedirectShortUrl(ctx context.Context, in *RedirectShortUrlReq, opts ...grpc.CallOption) (*RedirectShortUrlResp, error)
+	RedirectToShortUrl(ctx context.Context, in *RedirectToShortUrlReq, opts ...grpc.CallOption) (*RedirectToShortUrlResp, error)
 }
 
-type shortUrlClient struct {
+type urlShortenerClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewShortUrlClient(cc grpc.ClientConnInterface) ShortUrlClient {
-	return &shortUrlClient{cc}
+func NewUrlShortenerClient(cc grpc.ClientConnInterface) UrlShortenerClient {
+	return &urlShortenerClient{cc}
 }
 
-func (c *shortUrlClient) CreateShortUrl(ctx context.Context, in *CreateShortUrlReq, opts ...grpc.CallOption) (*CreateShortUrlResp, error) {
+func (c *urlShortenerClient) CreateShortUrl(ctx context.Context, in *CreateShortUrlReq, opts ...grpc.CallOption) (*CreateShortUrlResp, error) {
 	out := new(CreateShortUrlResp)
-	err := c.cc.Invoke(ctx, "/short_url.ShortUrl/CreateShortUrl", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/short_url.UrlShortener/CreateShortUrl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *shortUrlClient) RedirectShortUrl(ctx context.Context, in *RedirectShortUrlReq, opts ...grpc.CallOption) (*RedirectShortUrlResp, error) {
-	out := new(RedirectShortUrlResp)
-	err := c.cc.Invoke(ctx, "/short_url.ShortUrl/RedirectShortUrl", in, out, opts...)
+func (c *urlShortenerClient) RedirectToShortUrl(ctx context.Context, in *RedirectToShortUrlReq, opts ...grpc.CallOption) (*RedirectToShortUrlResp, error) {
+	out := new(RedirectToShortUrlResp)
+	err := c.cc.Invoke(ctx, "/short_url.UrlShortener/RedirectToShortUrl", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// ShortUrlServer is the server API for ShortUrl service.
-// All implementations must embed UnimplementedShortUrlServer
+// UrlShortenerServer is the server API for UrlShortener service.
+// All implementations must embed UnimplementedUrlShortenerServer
 // for forward compatibility
-type ShortUrlServer interface {
+type UrlShortenerServer interface {
 	CreateShortUrl(context.Context, *CreateShortUrlReq) (*CreateShortUrlResp, error)
-	RedirectShortUrl(context.Context, *RedirectShortUrlReq) (*RedirectShortUrlResp, error)
-	mustEmbedUnimplementedShortUrlServer()
+	RedirectToShortUrl(context.Context, *RedirectToShortUrlReq) (*RedirectToShortUrlResp, error)
+	mustEmbedUnimplementedUrlShortenerServer()
 }
 
-// UnimplementedShortUrlServer must be embedded to have forward compatible implementations.
-type UnimplementedShortUrlServer struct {
+// UnimplementedUrlShortenerServer must be embedded to have forward compatible implementations.
+type UnimplementedUrlShortenerServer struct {
 }
 
-func (UnimplementedShortUrlServer) CreateShortUrl(context.Context, *CreateShortUrlReq) (*CreateShortUrlResp, error) {
+func (UnimplementedUrlShortenerServer) CreateShortUrl(context.Context, *CreateShortUrlReq) (*CreateShortUrlResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateShortUrl not implemented")
 }
-func (UnimplementedShortUrlServer) RedirectShortUrl(context.Context, *RedirectShortUrlReq) (*RedirectShortUrlResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RedirectShortUrl not implemented")
+func (UnimplementedUrlShortenerServer) RedirectToShortUrl(context.Context, *RedirectToShortUrlReq) (*RedirectToShortUrlResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RedirectToShortUrl not implemented")
 }
-func (UnimplementedShortUrlServer) mustEmbedUnimplementedShortUrlServer() {}
+func (UnimplementedUrlShortenerServer) mustEmbedUnimplementedUrlShortenerServer() {}
 
-// UnsafeShortUrlServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to ShortUrlServer will
+// UnsafeUrlShortenerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to UrlShortenerServer will
 // result in compilation errors.
-type UnsafeShortUrlServer interface {
-	mustEmbedUnimplementedShortUrlServer()
+type UnsafeUrlShortenerServer interface {
+	mustEmbedUnimplementedUrlShortenerServer()
 }
 
-func RegisterShortUrlServer(s grpc.ServiceRegistrar, srv ShortUrlServer) {
-	s.RegisterService(&ShortUrl_ServiceDesc, srv)
+func RegisterUrlShortenerServer(s grpc.ServiceRegistrar, srv UrlShortenerServer) {
+	s.RegisterService(&UrlShortener_ServiceDesc, srv)
 }
 
-func _ShortUrl_CreateShortUrl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UrlShortener_CreateShortUrl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateShortUrlReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ShortUrlServer).CreateShortUrl(ctx, in)
+		return srv.(UrlShortenerServer).CreateShortUrl(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/short_url.ShortUrl/CreateShortUrl",
+		FullMethod: "/short_url.UrlShortener/CreateShortUrl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShortUrlServer).CreateShortUrl(ctx, req.(*CreateShortUrlReq))
+		return srv.(UrlShortenerServer).CreateShortUrl(ctx, req.(*CreateShortUrlReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ShortUrl_RedirectShortUrl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RedirectShortUrlReq)
+func _UrlShortener_RedirectToShortUrl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RedirectToShortUrlReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ShortUrlServer).RedirectShortUrl(ctx, in)
+		return srv.(UrlShortenerServer).RedirectToShortUrl(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/short_url.ShortUrl/RedirectShortUrl",
+		FullMethod: "/short_url.UrlShortener/RedirectToShortUrl",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShortUrlServer).RedirectShortUrl(ctx, req.(*RedirectShortUrlReq))
+		return srv.(UrlShortenerServer).RedirectToShortUrl(ctx, req.(*RedirectToShortUrlReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// ShortUrl_ServiceDesc is the grpc.ServiceDesc for ShortUrl service.
+// UrlShortener_ServiceDesc is the grpc.ServiceDesc for UrlShortener service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var ShortUrl_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "short_url.ShortUrl",
-	HandlerType: (*ShortUrlServer)(nil),
+var UrlShortener_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "short_url.UrlShortener",
+	HandlerType: (*UrlShortenerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CreateShortUrl",
-			Handler:    _ShortUrl_CreateShortUrl_Handler,
+			Handler:    _UrlShortener_CreateShortUrl_Handler,
 		},
 		{
-			MethodName: "RedirectShortUrl",
-			Handler:    _ShortUrl_RedirectShortUrl_Handler,
+			MethodName: "RedirectToShortUrl",
+			Handler:    _UrlShortener_RedirectToShortUrl_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
