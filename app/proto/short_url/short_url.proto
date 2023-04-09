@@ -45,7 +45,6 @@ service UrlShortener {
 message ShortUrl {
     string short_url = 1;
     string url = 2;
-    google.protobuf.Timestamp created_at = 3;
 }
 
 message CreateShortUrlReq {
