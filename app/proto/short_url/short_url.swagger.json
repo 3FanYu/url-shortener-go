@@ -16,7 +16,7 @@
     "application/json"
   ],
   "paths": {
-    "/api/short_url": {
+    "/": {
       "get": {
         "operationId": "UrlShortener_RedirectToShortUrl",
         "responses": {
@@ -48,7 +48,9 @@
         "tags": [
           "UrlShortener"
         ]
-      },
+      }
+    },
+    "/api/short_url": {
       "post": {
         "operationId": "UrlShortener_CreateShortUrl",
         "responses": {

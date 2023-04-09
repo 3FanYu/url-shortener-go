@@ -140,7 +140,7 @@ func RegisterUrlShortenerHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/short_url.UrlShortener/RedirectToShortUrl", runtime.WithHTTPPathPattern("/api/short_url"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/short_url.UrlShortener/RedirectToShortUrl", runtime.WithHTTPPathPattern("/"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -226,7 +226,7 @@ func RegisterUrlShortenerHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/short_url.UrlShortener/RedirectToShortUrl", runtime.WithHTTPPathPattern("/api/short_url"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/short_url.UrlShortener/RedirectToShortUrl", runtime.WithHTTPPathPattern("/"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -257,7 +257,7 @@ func (m response_UrlShortener_CreateShortUrl_0) XXX_ResponseBody() interface{} {
 var (
 	pattern_UrlShortener_CreateShortUrl_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "short_url"}, ""))
 
-	pattern_UrlShortener_RedirectToShortUrl_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "short_url"}, ""))
+	pattern_UrlShortener_RedirectToShortUrl_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{""}, ""))
 )
 
 var (

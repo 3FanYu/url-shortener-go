@@ -29,7 +29,7 @@ service UrlShortener {
 
     rpc RedirectToShortUrl(RedirectToShortUrlReq) returns (RedirectToShortUrlResp){
         option (google.api.http) = {
-            get: "/api/short_url"
+            get: "/"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             responses: {
