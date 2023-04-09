@@ -11,6 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"google.golang.org/protobuf/proto"
 
 	urlShortenerRepo "github.com/3FanYu/url-shortener-go/adapter/repository/mongo/url_shortener"
 	pb "github.com/3FanYu/url-shortener-go/proto/short_url"
@@ -83,7 +84,9 @@ func main() {
 	defer conn.Close()
 
 	// Create a new Mux
-	mux := runtime.NewServeMux()
+	mux := runtime.NewServeMux(
+		runtime.WithForwardResponseOption(responseHeaderMatcher),
+	)
 
 	// Register your gRPC service on the Mux
 	if err := pb.RegisterUrlShortenerHandler(ctx, mux, conn); err != nil {
@@ -97,4 +100,14 @@ func main() {
 		fmt.Printf("Failed to start server: %v\n", err)
 		return
 	}
+}
+
+func responseHeaderMatcher(ctx context.Context, w http.ResponseWriter, resp proto.Message) error {
+	headers := w.Header()
+	if location, ok := headers["Grpc-Metadata-Location"]; ok {
+		w.Header().Set("Location", location[0])
+		w.WriteHeader(http.StatusFound)
+	}
+
+	return nil
 }

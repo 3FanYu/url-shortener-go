@@ -47,7 +47,11 @@ func (im *impl) Create(ctx context.Context, shortUrl *url_shortener.ShortUrl) (*
 }
 
 func (im *impl) RedirectToShortUrl(ctx context.Context, key string) (*url_shortener.ShortUrl, error) {
-	return im.repo.GetByKey(ctx, key)
+	r, err := im.repo.GetByKey(ctx, key)
+	if err != nil{
+		return nil, err
+	}
+	return addUrlPrefix(r), nil
 }
 
 func generateKey() string {
@@ -59,6 +63,6 @@ func generateKey() string {
 }
 
 func addUrlPrefix(shortUrl *url_shortener.ShortUrl) *url_shortener.ShortUrl {
-	shortUrl.Key = "http://localhost/" + shortUrl.Key
+	shortUrl.Key = "http://localhost:3000/" + shortUrl.Key
 	return shortUrl
 }
