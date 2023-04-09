@@ -16,40 +16,6 @@
     "application/json"
   ],
   "paths": {
-    "/": {
-      "get": {
-        "operationId": "UrlShortener_RedirectToShortUrl",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/short_urlRedirectToShortUrlResp"
-            }
-          },
-          "302": {
-            "description": "Redirect to original URL.",
-            "schema": {}
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "shortUrl",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "UrlShortener"
-        ]
-      }
-    },
     "/api/short_url": {
       "post": {
         "operationId": "UrlShortener_CreateShortUrl",
@@ -75,6 +41,40 @@
             "schema": {
               "$ref": "#/definitions/short_urlCreateShortUrlReq"
             }
+          }
+        ],
+        "tags": [
+          "UrlShortener"
+        ]
+      }
+    },
+    "/{shortUrl}": {
+      "get": {
+        "operationId": "UrlShortener_RedirectToShortUrl",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/short_urlRedirectToShortUrlResp"
+            }
+          },
+          "302": {
+            "description": "Redirect to original URL.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "shortUrl",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "tags": [
@@ -130,8 +130,8 @@
     "short_urlRedirectToShortUrlResp": {
       "type": "object",
       "properties": {
-        "url": {
-          "type": "string"
+        "shortUrl": {
+          "$ref": "#/definitions/short_urlShortUrl"
         }
       }
     },
