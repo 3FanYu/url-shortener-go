@@ -33,7 +33,7 @@ func (h *shortUrlHandler) CreateShortUrl(ctx context.Context, req *pb.CreateShor
 // convertToPb converts url_shortener.ShortUrl to pb.ShortUrl
 func convertToPb(r *url_shortener.ShortUrl) *pb.ShortUrl {
 	return &pb.ShortUrl{
-		ShortUrl: r.Key,
-		Url:      r.Url,
+		ShortUrl:    r.Key,
+		OriginalUrl: r.Url,
 	}
 }

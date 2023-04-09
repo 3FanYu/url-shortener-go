@@ -139,7 +139,7 @@
         "shortUrl": {
           "type": "string"
         },
-        "url": {
+        "originalUrl": {
           "type": "string"
         }
       }

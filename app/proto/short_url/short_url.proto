@@ -44,7 +44,7 @@ service UrlShortener {
 
 message ShortUrl {
     string short_url = 1;
-    string url = 2;
+    string original_url = 2;
 }
 
 message CreateShortUrlReq {

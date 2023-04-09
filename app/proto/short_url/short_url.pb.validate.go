@@ -59,7 +59,7 @@ func (m *ShortUrl) validate(all bool) error {
 
 	// no validation rules for ShortUrl
 
-	// no validation rules for Url
+	// no validation rules for OriginalUrl
 
 	if len(errors) > 0 {
 		return ShortUrlMultiError(errors)
