@@ -24,8 +24,8 @@ func NewUsecase(repo ShortUrlRepository) ShortUrlUsecase {
 	return im
 }
 
-func (im *impl) Create(ctx context.Context, url string) error {
-	return im.repo.Create(ctx, url)
+func (im *impl) Create(ctx context.Context, shortUrl *url_shortener.ShortUrl) (*url_shortener.ShortUrl ,error) {
+	return im.repo.Create(ctx, shortUrl)
 }
 
 func (im *impl) RedirectToShortUrl(ctx context.Context, key string) (*url_shortener.ShortUrl, error) {

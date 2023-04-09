@@ -19,17 +19,22 @@ type shortUrlRepository struct {
 	db *mongo.Database
 }
 
+const collection = "short_urls"
+
 func NewRepository(db *mongo.Database) uc.ShortUrlRepository {
 	return &shortUrlRepository{db: db}
 }
 
-func (r *shortUrlRepository) Create(ctx context.Context, url string) error {
-	_, err := r.db.Collection("short_url_mappings").InsertOne(ctx, shortUrl{Url: url})
-	return err
+func (r *shortUrlRepository) Create(ctx context.Context, shortUrl *domain.ShortUrl) (*domain.ShortUrl, error) {
+	_, err := r.db.Collection(collection).InsertOne(ctx, shortUrl)
+	if err != nil {
+		return nil, err
+	}
+	return shortUrl, nil
 }
 
 func (r *shortUrlRepository) GetByKey(ctx context.Context, key string) (*domain.ShortUrl, error) {
 	var mapping domain.ShortUrl
-	err := r.db.Collection("short_url_mappings").FindOne(ctx, shortUrl{Key: key}).Decode(&mapping)
+	err := r.db.Collection(collection).FindOne(ctx, shortUrl{Key: key}).Decode(&mapping)
 	return &mapping, err
 }
