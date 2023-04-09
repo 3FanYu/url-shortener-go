@@ -3,18 +3,17 @@ package url_shortener
 import (
 	"context"
 
-	"github.com/3FanYu/url-shortener-go/domain/url_shortener"
 	pb "github.com/3FanYu/url-shortener-go/proto/short_url"
 	uc "github.com/3FanYu/url-shortener-go/usecase/url_shortener"
 )
 
 type shortUrlHanlder struct {
-	*pb.UnimplementedShortUrlServer
+	*pb.UnimplementedUrlShortenerServer
 
 	usecase uc.ShortUrlUsecase
 }
 
-func NewUrlHandler(usecase uc.ShortUrlUsecase) pb.ShortUrlServer {
+func NewHandler(usecase uc.ShortUrlUsecase) pb.UrlShortenerServer {
 	return &shortUrlHanlder{usecase: usecase}
 }
 
@@ -26,5 +25,5 @@ func (h *shortUrlHanlder) CreateShortUrl(ctx context.Context, req *pb.CreateShor
 		return nil, err
 	}
 
-	return &pb.CreateResponse{}, nil
+	return &pb.CreateShortUrlResp{}, nil
 }

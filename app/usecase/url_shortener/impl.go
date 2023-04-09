@@ -9,7 +9,7 @@ type impl struct {
 	repo ShortUrlRepository
 }
 
-func NewUrlShortenerUsecase(repo ShortUrlRepository) ShortUrlUsecase {
+func NewUsecase(repo ShortUrlRepository) ShortUrlUsecase {
 	im := &impl{repo: repo}
 	// im.cache = cacheSrv.Create([]cachekit.Setting{
 	// 	{
@@ -24,10 +24,10 @@ func NewUrlShortenerUsecase(repo ShortUrlRepository) ShortUrlUsecase {
 	return im
 }
 
-func (im *impl) Create(ctx context.Context, mapping *url_shortener.ShortUrl) error {
-	return im.repo.Create(ctx, mapping)
+func (im *impl) Create(ctx context.Context, url string) error {
+	return im.repo.Create(ctx, url)
 }
 
-func (im *impl) GetByKey(ctx context.Context, key string) (*url_shortener.ShortUrl, error) {
+func (im *impl) RedirectToShortUrl(ctx context.Context, key string) (*url_shortener.ShortUrl, error) {
 	return im.repo.GetByKey(ctx, key)
 }
