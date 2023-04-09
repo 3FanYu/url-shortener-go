@@ -3,30 +3,45 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"net"
 	"net/http"
 
-	pb "github.com/3FanYu/url-shortener-go/proto/main"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+
+	urlShortenerRepo "github.com/3FanYu/url-shortener-go/adapter/repository/mongo/url_shortener"
+	pb "github.com/3FanYu/url-shortener-go/proto/short_url"
+	urlShortenerHlr "github.com/3FanYu/url-shortener-go/router/handler/url_shortener"
+	urlShortenerUC "github.com/3FanYu/url-shortener-go/usecase/url_shortener"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 )
 
-type server struct{
-	*pb.UnimplementedShortUrlServer
-}
-
-func (s *server) CreateShortUrl(ctx context.Context, req *pb.CreateShortUrlReq) (*pb.CreateShortUrlResp, error) {
-	// your implementation code here
-	return &pb.CreateShortUrlResp{ShortUrl: "http://short.url/abc123"}, nil
-}
-
-func (s *server) RedirectShortUrl(ctx context.Context, req *pb.RedirectShortUrlReq) (*pb.RedirectShortUrlResp, error) {
-	// your implementation code here
-	return &pb.RedirectShortUrlResp{Url: "http://www.long.url/original/page"}, nil
-}
-
 func main() {
+	// Set client options
+	clientOptions := options.Client().ApplyURI("mongodb://db:27017")
+
+	// Connect to MongoDB
+	client, err := mongo.Connect(context.Background(), clientOptions)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Check the connection
+	err = client.Ping(context.Background(), nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Connected to MongoDB!")
+	db := client.Database("url_shortener")
+
+	repo := urlShortenerRepo.NewRepository(db)
+	uc := urlShortenerUC.NewUsecase(repo)
+	hlr := urlShortenerHlr.NewHandler(uc)
+
 	// Create a listener on port 50051
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
@@ -38,7 +53,7 @@ func main() {
 	grpcServer := grpc.NewServer()
 
 	// Register your gRPC service with the server
-	pb.RegisterShortUrlServer(grpcServer, &server{})
+	pb.RegisterUrlShortenerServer(grpcServer, hlr)
 
 	// Register gRPC reflection service on gRPC server.
 	reflection.Register(grpcServer)
@@ -71,7 +86,7 @@ func main() {
 	mux := runtime.NewServeMux()
 
 	// Register your gRPC service on the Mux
-	if err := pb.RegisterShortUrlHandler(ctx, mux, conn); err != nil {
+	if err := pb.RegisterUrlShortenerHandler(ctx, mux, conn); err != nil {
 		fmt.Printf("Failed to register service: %v\n", err)
 		return
 	}
