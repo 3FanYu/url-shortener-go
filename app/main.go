@@ -17,6 +17,7 @@ import (
 	pb "github.com/3FanYu/url-shortener-go/proto/short_url"
 	urlShortenerHlr "github.com/3FanYu/url-shortener-go/router/handler/url_shortener"
 	urlShortenerUC "github.com/3FanYu/url-shortener-go/usecase/url_shortener"
+	"github.com/go-redis/redis"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 )
 
@@ -25,22 +26,37 @@ func main() {
 	clientOptions := options.Client().ApplyURI("mongodb://db:27017")
 
 	// Connect to MongoDB
-	client, err := mongo.Connect(context.Background(), clientOptions)
+	dbClient, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Check the connection
-	err = client.Ping(context.Background(), nil)
+	err = dbClient.Ping(context.Background(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	fmt.Println("Connected to MongoDB!")
-	db := client.Database("url_shortener")
+	db := dbClient.Database("url_shortener")
+
+	// Connect to Redis
+	redisClient := redis.NewClient(&redis.Options{
+		Addr:     "redis:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+
+	// test the connection
+	pong, err := redisClient.Ping().Result()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(pong) // Output: PONG
+	fmt.Println("Connected to Redis!")
 
 	repo := urlShortenerRepo.NewRepository(db)
-	uc := urlShortenerUC.NewUsecase(repo)
+	uc := urlShortenerUC.NewUsecase(redisClient, repo)
 	hlr := urlShortenerHlr.NewHandler(uc)
 
 	// Create a listener on port 50051
