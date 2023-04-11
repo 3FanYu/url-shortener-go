@@ -29,7 +29,7 @@ func (h *shortUrlHandler) CreateShortUrl(ctx context.Context, req *pb.CreateShor
 		return nil, err
 	}
 
-	return &pb.CreateShortUrlResp{ShortUrl: convertToPb(shortUrl)}, nil
+	return &pb.CreateShortUrlResp{ShortUrl: convertToPb(addUrlPrefix(shortUrl))}, nil
 }
 
 func (h *shortUrlHandler) RedirectToShortUrl(ctx context.Context, req *pb.RedirectToShortUrlReq) (*pb.RedirectToShortUrlResp, error) {
@@ -41,7 +41,7 @@ func (h *shortUrlHandler) RedirectToShortUrl(ctx context.Context, req *pb.Redire
 	header := metadata.Pairs("Location", shortUrl.Url)
 	grpc.SendHeader(ctx, header)
 
-	return &pb.RedirectToShortUrlResp{ShortUrl: convertToPb(shortUrl)}, nil
+	return &pb.RedirectToShortUrlResp{ShortUrl: convertToPb(addUrlPrefix(shortUrl))}, nil
 }
 
 // convertToPb converts url_shortener.ShortUrl to pb.ShortUrl
@@ -50,4 +50,10 @@ func convertToPb(r *url_shortener.ShortUrl) *pb.ShortUrl {
 		ShortUrl:    r.Key,
 		OriginalUrl: r.Url,
 	}
+}
+
+// addUrlPrefix adds url prefix to shortUrl
+func addUrlPrefix(shortUrl *url_shortener.ShortUrl) *url_shortener.ShortUrl {
+	shortUrl.Key = "http://localhost:3000/" + shortUrl.Key
+	return shortUrl
 }
