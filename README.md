@@ -45,6 +45,8 @@ curl --location --request POST 'localhost:3000/api/short_url' \
 - [x] Take the decoded result as the key to search in database to get the original_url
 - [x] Response 302 and redirect client browser to original_url
 
+## TODO
+- Setup test environement and write test cases.
 
 ## Road Map
 
