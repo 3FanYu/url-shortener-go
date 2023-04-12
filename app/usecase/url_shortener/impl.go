@@ -20,7 +20,7 @@ type impl struct {
 // salt is 2023/01/01 00:00:00:000 timestamp
 const salt = 1672502400000
 const maxCount = 10000
-const cacheTtl = 60 * time.Second
+const cacheTtl = 10 * time.Second
 
 var (
 	timeNow        = time.Now

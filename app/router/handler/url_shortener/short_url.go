@@ -2,6 +2,7 @@ package url_shortener
 
 import (
 	"context"
+	"time"
 
 	"github.com/3FanYu/url-shortener-go/domain/url_shortener"
 	pb "github.com/3FanYu/url-shortener-go/proto/short_url"
@@ -22,7 +23,12 @@ func NewHandler(usecase uc.ShortUrlUsecase) pb.UrlShortenerServer {
 
 func (h *shortUrlHandler) CreateShortUrl(ctx context.Context, req *pb.CreateShortUrlReq) (*pb.CreateShortUrlResp, error) {
 	url := req.GetUrl()
-	shortUrl := &url_shortener.ShortUrl{Url: url}
+	curTime := time.Now()
+	shortUrl := &url_shortener.ShortUrl{
+		Url:       url,
+		CreatedAt: curTime,
+		UpdatedAt: curTime,
+	}
 
 	_, err := h.usecase.Create(ctx, shortUrl)
 	if err != nil {
