@@ -36,9 +36,9 @@ func NewUsecase(cacheSrv *redis.Client, repo ShortUrlRepository) ShortUrlUsecase
 	return im
 }
 
-func (im *impl) Create(ctx context.Context, shortUrl *url_shortener.ShortUrl) (*url_shortener.ShortUrl, error) {
+func (im *impl) FindOrCreate(ctx context.Context, shortUrl *url_shortener.ShortUrl) (*url_shortener.ShortUrl, error) {
 	shortUrl.Key = generateKey()
-	r, err := im.repo.Create(ctx, shortUrl)
+	r, err := im.repo.FindOrCreate(ctx, shortUrl)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (im *impl) Create(ctx context.Context, shortUrl *url_shortener.ShortUrl) (*
 	if err != nil {
 		log.Printf("JSON Marshal failed: %v", err)
 	}
-	err = im.cache.Set(shortUrl.Key, json, cacheTtl).Err()
+	err = im.cache.Set(r.Key, json, cacheTtl).Err()
 	if err != nil {
 		log.Printf("Cache Set failed: %v", err)
 	}

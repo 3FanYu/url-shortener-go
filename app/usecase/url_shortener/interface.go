@@ -9,12 +9,12 @@ import (
 // EventRepository deals with events related video
 type ShortUrlRepository interface {
 	// BatchCreate creates list of events in batch
-	Create(ctx context.Context, shortUrl *domain.ShortUrl) (*domain.ShortUrl, error)
+	FindOrCreate(ctx context.Context, shortUrl *domain.ShortUrl) (*domain.ShortUrl, error)
 	GetByKey(ctx context.Context, key string) (*domain.ShortUrl, error)
 }
 
 type ShortUrlUsecase interface {
 	// BatchCreate creates list of events in batch
-	Create(ctx context.Context, shortUrl *domain.ShortUrl) (*domain.ShortUrl, error)
+	FindOrCreate(ctx context.Context, shortUrl *domain.ShortUrl) (*domain.ShortUrl, error)
 	RedirectToShortUrl(ctx context.Context, key string) (*domain.ShortUrl, error)
 }

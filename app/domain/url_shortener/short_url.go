@@ -1,8 +1,13 @@
 package url_shortener
 
-import "time"
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type ShortUrl struct {
+	ID        primitive.ObjectID
 	Key       string
 	Url       string
 	CreatedAt time.Time
