@@ -105,8 +105,8 @@ Response 302 and redirect client browser to original_url
 
 ### Go Beyond
 Unfortunately, Implementation V2 still faces some problems when we scale:
-Small chance of unique ID collision (happens when multiple services receive request at exact same time and while counters are luckily on the same number) 
-Heavy writes.
+1. Small chance of unique ID collision (happens when multiple services receive request at exact same time and while counters are luckily on the same number) 
+2. Heavy writes.
 
 To deal with problem 1, we will need to introduce a centralized service that maintains the configuration of all the counters inside every service. EX: Apache Zookeeper.
 For instance, the centralized service can hold configuration of the counter’s range of counting for all the counters. EX: serviceA counter = 1~10000, serviceB counter = 10000 ~ 20000. That way we may never have duplicated unique ID be generated.
