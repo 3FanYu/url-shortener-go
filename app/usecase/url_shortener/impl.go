@@ -20,7 +20,7 @@ type impl struct {
 // salt is 2023/01/01 00:00:00:000 timestamp
 const salt = 1672502400000
 const maxCount = 10000
-const cacheTtl = 10 * time.Second
+const cacheTtl = 100 * time.Second
 
 var (
 	timeNow        = time.Now
@@ -65,6 +65,7 @@ func (im *impl) RedirectToShortUrl(ctx context.Context, key string) (*url_shorte
 		return &shortUrl, nil
 	}
 	log.Printf("JSON Unmarshal failed: %v", err)
+	log.Printf("Key: %v", key)
 
 	r, err := im.repo.GetByKey(ctx, key)
 	if err != nil {
